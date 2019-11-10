@@ -3,6 +3,7 @@ import os
 import tornado.httpserver, tornado.ioloop, tornado.options, tornado.web, os.path, random, string
 from tornado.options import define, options
 import cv2, glob, dlib
+import base64
 
 define("port", default=9000, help="run on the given port", type=int)
 
@@ -21,7 +22,8 @@ class Application(tornado.web.Application):
 
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):
-        self.render("upload_form.html")
+        # self.render("upload_form.html")
+        self.render("upload.html")
 
 class UploadHandler(tornado.web.RequestHandler):
 
@@ -29,31 +31,55 @@ class UploadHandler(tornado.web.RequestHandler):
     input_tensor_process = "label_image.py --graph=/tmp/output_graph.pb --labels=/tmp/output_labels.txt --input_layer=Placeholder --output_layer=final_result --image=uploads/"
 
     def post(self):
-        age_list = ['(0, 2)', '(4, 6)', '(8, 12)', '(15, 20)', '(25, 32)', '(38, 43)', '(48, 53)', '(60, 100)']
-        file1 = self.request.files['file1'][0]
-        original_fname = file1['filename']
-        extension = os.path.splitext(original_fname)[1]
+        data = self.get_argument('file1')
+        print(data)
+        data = data.replace('data:image/png;base64,', '')
+        data = data.replace(' ', '+')
         fname = ''.join(random.choice(string.ascii_lowercase + string.digits) for x in range(6))
-        self.final_filename = fname+extension
+        self.final_filename = fname + ".png"
+        print(self.final_filename)
         output_file = open("uploads/" + self.final_filename, 'wb')
-        output_file.write(file1['body'])
+        data = base64.b64decode(data)
+        output_file.write(data)
         learnpimpe = self.learn_machine()
         learn_age_sex = self.learn_machine_age_and_sex()
         learn_age_sex = list(learn_age_sex)
         sex = learn_age_sex[0]
         age = learn_age_sex[1]
+        face_length = learn_age_sex[2]
 
-        # for i in range(age_list):
-        #     if age == i:
-        print(learnpimpe)
-        print(learn_age_sex[0])
-        self.get()
-        # self.write("<img src=""uploads/"+self.final_filename+">"+"<br>")
-        # self.write(learnpimpe+"<br>")
-        # self.write(str(learn_age_sex))
 
-    def get(self):
-        self.render("view/index.html")
+        newlearnpimple = ['', '']
+        learnpimpe = learnpimpe.split(' ')
+        pimple_age = learnpimpe[1].split('\r')
+
+        if learnpimpe[0] == 'face':
+            newlearnpimple[0] = '여드름'
+            newlearnpimple[1] = round(1 - float(pimple_age[0]), 2)
+        else:
+            newlearnpimple[0] = '여드름'
+            newlearnpimple[1] = round(float(pimple_age[0]), 2)
+
+        print(newlearnpimple)
+        print(sex)
+        print(age)
+        print(face_length)
+
+
+        # self.get(learn_age_sex, learnpimpe)
+        self.get(age)
+
+    def get(self, age):
+
+        if(age == '10'):
+            self.render("view/age10.html")
+        elif(age == '20'):
+            self.render("view/age20.html")
+        elif (age == '30'):
+            self.render("view/age30.html")
+        elif (age == '40'):
+            self.render("view/age40.html")
+        # self.render("upload_form.html")
 
     def learn_machine(self):
         proc = subprocess.Popen(
@@ -65,7 +91,7 @@ class UploadHandler(tornado.web.RequestHandler):
         # self.write(out)
 
     def learn_machine_age_and_sex(self):
-        age_list = ['(0, 2)', '(4, 6)', '(8, 12)', '(15, 20)', '(25, 32)', '(38, 43)', '(48, 53)', '(60, 100)']
+        age_list = ['10', '10', '10', '10', '20', '30', '40', '40']
         gender_list = ['Male', 'Female']
         detector = dlib.get_frontal_face_detector()
 
@@ -102,9 +128,14 @@ class UploadHandler(tornado.web.RequestHandler):
                 age_preds = age_net.forward()
                 age = age_list[age_preds[0].argmax()]
 
-                print(gender, age)
+                # visualize
+                cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 255), 2)
+                face_length = (y2 - y1) * 0.2
+                cv2.imwrite('result/%s' % img_path.split('/')[-1], img)
 
-                return gender, age
+                # print(gender, age)
+
+                return gender, age, face_length
 
 def main():
     http_server = tornado.httpserver.HTTPServer(Application())

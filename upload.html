@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<video id="player" controls autoplay></video>
+<button id="capture">Capture</button>
+<canvas id="snapshot" width=320 height=240></canvas>
+
+<form method="POST" action="/upload" enctype="multipart/form-data" onsubmit="prepareImg();">
+  <input id="inp_img" type="hidden" name="file1" value="">
+  <input id="bt_upload" type="submit" value="upload">
+</form>
+
+<script>
+    var player = document.getElementById('player');
+    var snapshotCanvas = document.getElementById('snapshot');
+    var captureButton = document.getElementById('capture');
+
+    var handleSuccess = function (stream) {
+        // Attach the video stream to the video element and autoplay.
+        player.srcObject = stream;
+    };
+
+    captureButton.addEventListener('click', function () {
+        var context = snapshot.getContext('2d');
+        // Draw the video frame to the canvas.
+        context.drawImage(player, 0, 0, snapshotCanvas.width,
+            snapshotCanvas.height);
+    });
+
+    navigator.mediaDevices.getUserMedia({video: true})
+        .then(handleSuccess);
+</script>
+<script>
+    function prepareImg() {
+        var canvas = document.getElementById('snapshot');
+        document.getElementById('inp_img').value = canvas.toDataURL("image/png");
+    }
+</script>
+</body>
+</html>
