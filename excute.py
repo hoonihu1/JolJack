@@ -28,11 +28,12 @@ class IndexHandler(tornado.web.RequestHandler):
 class UploadHandler(tornado.web.RequestHandler):
 
     final_filename = ""
+    final_result=""
     input_tensor_process = "label_image.py --graph=/tmp/output_graph.pb --labels=/tmp/output_labels.txt --input_layer=Placeholder --output_layer=final_result --image=uploads/"
 
     def post(self):
         data = self.get_argument('file1')
-        print(data)
+        # print(data)
         data = data.replace('data:image/png;base64,', '')
         data = data.replace(' ', '+')
         fname = ''.join(random.choice(string.ascii_lowercase + string.digits) for x in range(6))
@@ -72,13 +73,13 @@ class UploadHandler(tornado.web.RequestHandler):
     def get(self, age):
 
         if(age == '10'):
-            self.render("view/age10.html")
+            self.render("view/age10.html", face_img = self.final_filename)
         elif(age == '20'):
-            self.render("view/age20.html")
+            self.render("view/age20.html", face_img = self.final_filename)
         elif (age == '30'):
-            self.render("view/age30.html")
+            self.render("view/age30.html", face_img = self.final_filename)
         elif (age == '40'):
-            self.render("view/age40.html")
+            self.render("view/age40.html", face_img = self.final_filename)
         # self.render("upload_form.html")
 
     def learn_machine(self):
@@ -131,7 +132,7 @@ class UploadHandler(tornado.web.RequestHandler):
                 # visualize
                 cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 255), 2)
                 face_length = (y2 - y1) * 0.2
-                cv2.imwrite('result/%s' % img_path.split('/')[-1], img)
+                cv2.imwrite('view/result/%s' % img_path.split('/')[-1], img)
 
                 # print(gender, age)
 
