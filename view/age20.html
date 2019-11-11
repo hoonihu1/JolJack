@@ -20,6 +20,35 @@
 
 <body>
 
+<style>
+    .card-img-top {
+        border-left: 0.5px solid #eee;
+    }
+
+    .more {
+        display: inline-block;
+        font-family: sans-serif;
+    }
+
+    .more_out {
+        display: block;
+    }
+
+    .diff {
+        display: inline-block;
+        color: red;
+        font-size: 2.0rem;
+        font-family: sans-serif;
+    }
+
+    #headeri {
+        background-color: white;
+        border: 3px solid #eee;
+    }
+
+
+</style>
+
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
@@ -53,9 +82,37 @@
 <div class="container">
 
     <!-- Jumbotron Header -->
-    <header class="jumbotron my-4">
+    <header id="headeri" class="jumbotron my-4">
         <h2 class="display-3">상품추천</h2>
-        <img src="/view/result/10_1.jpg">
+        <img src="/view/result/{{face_img}}">
+        <div class="more_out">
+            <div class="more">성별은
+                <div class="diff">{{sex}}</div>
+                로 추정 됩니다.
+            </div>
+            <br>
+            <div class="more">얼굴 추정 나이는
+                <div class="diff">20</div>
+                대로 보입니다.
+            </div>
+            <br>
+            <div class="more">여드름 존재 확률은
+                <div class="diff">{{float(pimple)*100}}%</div>
+                입니다.
+            </div>
+            <br>
+            <div class="more">얼굴 길이는
+                <div class="diff">{{face_length}}</div>
+                (cm)이며, 추천 사이즈는
+                {%if float(face_length) >= 20%}
+                <div class="diff">Large</div>
+                입니다.
+                {%else%}
+                <div class="diff">Small</div>
+                입니다.
+                {%end%}
+            </div>
+        </div>
     </header>
 
     <!-- Page Features -->
@@ -63,7 +120,11 @@
 
         <div class="col-lg-3 col-md-6 mb-4">
             <div class="card h-100">
+                {%if sex == 'Male' %}
+                <img class="card-img-top" src="/view/m20_1.jpg" alt="" width="200" height="200">
+                {%else%}
                 <img class="card-img-top" src="/view/20_1.jpg" alt="" width="200" height="200">
+                {% end %}
                 <div class="card-body">
                     <h4 class="card-title">20대 연령 pick</h4>
                     <p class="card-text">20대 베스트1</p>
@@ -76,7 +137,11 @@
 
         <div class="col-lg-3 col-md-6 mb-4">
             <div class="card h-100">
+                {%if sex == 'Male' %}
+                <img class="card-img-top" src="/view/m20_2.jpg" alt="" width="200" height="200">
+                {%else%}
                 <img class="card-img-top" src="/view/20_2.jpg" alt="" width="200" height="200">
+                {%end%}
                 <div class="card-body">
                     <h4 class="card-title">20대 연령 pick</h4>
                     <p class="card-text">20대 베스트2</p>
@@ -89,7 +154,11 @@
 
         <div class="col-lg-3 col-md-6 mb-4">
             <div class="card h-100">
+                {%if sex == 'Male' %}
+                <img class="card-img-top" src="/view/m20_3.jpg" alt="" width="200" height="200">
+                {%else%}
                 <img class="card-img-top" src="/view/20_3.jpg" alt="" width="200" height="200">
+                {%end%}
                 <div class="card-body">
                     <h4 class="card-title">20대 연령 pick</h4>
                     <p class="card-text">20대 추천 베스트3</p>
@@ -102,7 +171,11 @@
 
         <div class="col-lg-3 col-md-6 mb-4">
             <div class="card h-100">
+                {%if sex == 'Male' %}
+                <img class="card-img-top" src="/view/m20_4.jpg" alt="" width="200" height="200">
+                {%else%}
                 <img class="card-img-top" src="/view/20_4.jpg" alt="" width="200" height="200">
+                {%end%}
                 <div class="card-body">
                     <h4 class="card-title">20대 연령 pick</h4>
                     <p class="card-text">20대 추천 베스트4</p>
@@ -115,9 +188,10 @@
 
     </div>
     <div class="row text-center">
-
+        {%if float(pimple) >= 0.4%}
         <div class="col-lg-3 col-md-6 mb-4">
             <div class="card h-100">
+
                 <img class="card-img-top" src="/view/spot_1.jpg" alt="" width="200" height="200">
                 <div class="card-body">
                     <h4 class="card-title">여드름 추천 제품</h4>
@@ -128,46 +202,37 @@
                 </div>
             </div>
         </div>
+        {%else%}
 
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card h-100">
-                <img class="card-img-top" src="/view/mask_1.jpg" alt="" width="200" height="200">
-                <div class="card-body">
-                    <h4 class="card-title">마스크팩 추천</h4>
-                    <p class="card-text">마스크팩 베스트1</p>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn btn-primary">Find Out More!</a>
-                </div>
-            </div>
-        </div>
+        {%end%}
 
+        {%if float(face_length) >= 20%}
         <div class="col-lg-3 col-md-6 mb-4">
             <div class="card h-100">
                 <img class="card-img-top" src="/view/mask_2.jpg" alt="" width="200" height="200">
                 <div class="card-body">
-                    <h4 class="card-title">마스크팩 추천</h4>
-                    <p class="card-text">마스크팩 베스트2</p>
+                    <h4 class="card-title">Large Size 마스크팩 추천</h4>
+                    <p class="card-text">마스크팩 베스트</p>
                 </div>
                 <div class="card-footer">
                     <a href="#" class="btn btn-primary">Find Out More!</a>
                 </div>
             </div>
         </div>
-
+        {%else%}
         <div class="col-lg-3 col-md-6 mb-4">
             <div class="card h-100">
                 <img class="card-img-top" src="/view/mask_3.jpg" alt="" width="200" height="200">
                 <div class="card-body">
-                    <h4 class="card-title">마스크팩 추천</h4>
-                    <p class="card-text">마스크팩 베스트3</p>
+                    <h4 class="card-title">Small Size 마스크팩 추천</h4>
+                    <p class="card-text">마스크팩 베스트</p>
                 </div>
                 <div class="card-footer">
                     <a href="#" class="btn btn-primary">Find Out More!</a>
                 </div>
             </div>
         </div>
-
+        {%end%}
     </div>
     <!-- /.row -->
 

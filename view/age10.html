@@ -3,187 +3,254 @@
 
 <head>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <title>10대_상품추천</title>
+    <title>10대_상품추천</title>
 
-  <!-- Bootstrap core CSS -->
-  <link href="/view/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="/view/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Custom styles for this template -->
-  <link href="/view/css/heroic-features.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/view/css/heroic-features.css" rel="stylesheet">
 
 </head>
 
 <body>
 
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">상품추천</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">recommend</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">list</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+<style>
+    .card-img-top {
+        border-left: 0.5px solid #eee;
+    }
 
-  <!-- Page Content -->
-  <div class="container">
+    .more {
+        display: inline-block;
+        font-family: sans-serif;
+    }
+
+    .more_out {
+        display: block;
+    }
+
+    .diff {
+        display: inline-block;
+        color: red;
+        font-size: 2.0rem;
+        font-family: sans-serif;
+    }
+
+    #headeri {
+        background-color: white;
+        border: 3px solid #eee;
+    }
+</style>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">상품추천</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">recommend</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">list</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Content -->
+<div class="container">
 
     <!-- Jumbotron Header -->
-    <header class="jumbotron my-4">
-      <h2 class="display-3">상품추천</h2>
-      <img src="/view/result/{{face_img}}">
+    <header id="headeri" class="jumbotron my-4">
+        <h2 class="display-3">상품추천</h2>
+        <img src="/view/result/{{face_img}}">
+        <div class="more_out">
+            <div class="more">성별은
+                <div class="diff">{{sex}}</div>
+                로 추정 됩니다.
+            </div>
+            <br>
+            <div class="more">얼굴 추정 나이는
+                <div class="diff">10</div>
+                대로 보입니다.
+            </div>
+            <br>
+            <div class="more">여드름 존재 확률은
+                <div class="diff">{{float(pimple)*100}}%</div>
+                입니다.
+            </div>
+            <br>
+            <div class="more">얼굴 길이는
+                <div class="diff">{{face_length}}</div>
+                (cm)이며, 추천 사이즈는
+                {%if float(face_length) >= 20%}
+                <div class="diff">Large</div>
+                입니다.
+                {%else%}
+                <div class="diff">Small</div>
+                입니다.
+                {%end%}
+            </div>
+        </div>
     </header>
 
     <!-- Page Features -->
     <div class="row text-center">
 
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" src="/view/10_1.jpg" alt="" width="200" height="200">
-          <div class="card-body">
-            <h4 class="card-title">10대 연령 pick</h4>
-            <p class="card-text">10대 베스트1</p>
-          </div>
-          <div class="card-footer">
-            <a href="#" class="btn btn-primary">Find Out More!</a>
-          </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card h-100">
+                {%if sex == 'Male' %}
+                <img class="card-img-top" src="/view/m10_1.jpg" alt="" width="200" height="200">
+                {%else%}
+                <img class="card-img-top" src="/view/10_1.jpg" alt="" width="200" height="200">
+                {% end %}
+                <div class="card-body">
+                    <h4 class="card-title">10대 연령 pick</h4>
+                    <p class="card-text">10대 베스트1</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary">Find Out More!</a>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" src="/view/10_2.jpg" alt="" width="200" height="200">
-          <div class="card-body">
-            <h4 class="card-title">10대 연령 pick</h4>
-            <p class="card-text">10대 베스트2</p>
-          </div>
-          <div class="card-footer">
-            <a href="#" class="btn btn-primary">Find Out More!</a>
-          </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card h-100">
+                {%if sex == 'Male' %}
+                <img class="card-img-top" src="/view/m10_2.jpg" alt="" width="200" height="200">
+                {%else%}
+                <img class="card-img-top" src="/view/10_2.jpg" alt="" width="200" height="200">
+                {%end%}
+                <div class="card-body">
+                    <h4 class="card-title">10대 연령 pick</h4>
+                    <p class="card-text">10대 베스트2</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary">Find Out More!</a>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" src="/view/10_3.jpg" alt="" width="200" height="200">
-          <div class="card-body">
-            <h4 class="card-title">10대 연령 pick</h4>
-            <p class="card-text">10대 추천 베스트3</p>
-          </div>
-          <div class="card-footer">
-            <a href="#" class="btn btn-primary">Find Out More!</a>
-          </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card h-100">
+                {%if sex == 'Male' %}
+                <img class="card-img-top" src="/view/m10_3.jpg" alt="" width="200" height="200">
+                {%else%}
+                <img class="card-img-top" src="/view/10_3.jpg" alt="" width="200" height="200">
+                {%end%}
+                <div class="card-body">
+                    <h4 class="card-title">10대 연령 pick</h4>
+                    <p class="card-text">10대 추천 베스트3</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary">Find Out More!</a>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" src="/view/10_4.jpg" alt="" width="200" height="200">
-          <div class="card-body">
-            <h4 class="card-title">10대 연령 pick</h4>
-            <p class="card-text">10대 추천 베스트4</p>
-          </div>
-          <div class="card-footer">
-            <a href="#" class="btn btn-primary">Find Out More!</a>
-          </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card h-100">
+                {%if sex == 'Male' %}
+                <img class="card-img-top" src="/view/m10_4.jpg" alt="" width="200" height="200">
+                {%else%}
+                <img class="card-img-top" src="/view/10_4.jpg" alt="" width="200" height="200">
+                {%end%}
+                <div class="card-body">
+                    <h4 class="card-title">10대 연령 pick</h4>
+                    <p class="card-text">10대 추천 베스트4</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary">Find Out More!</a>
+                </div>
+            </div>
         </div>
-      </div>
 
     </div>
-	<div class="row text-center">
+    <div class="row text-center">
+        {%if float(pimple) >= 0.4%}
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card h-100">
 
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" src="/view/spot_1.jpg" alt="" width="200" height="200">
-          <div class="card-body">
-            <h4 class="card-title">여드름 추천 제품</h4>
-            <p class="card-text"></p>
-          </div>
-          <div class="card-footer">
-            <a href="#" class="btn btn-primary">Find Out More!</a>
-          </div>
+                <img class="card-img-top" src="/view/spot_1.jpg" alt="" width="200" height="200">
+                <div class="card-body">
+                    <h4 class="card-title">여드름 추천 제품</h4>
+                    <p class="card-text"></p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary">Find Out More!</a>
+                </div>
+            </div>
         </div>
-      </div>
+        {%else%}
 
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" src="/view/mask_1.jpg" alt="" width="200" height="200">
-          <div class="card-body">
-            <h4 class="card-title">마스크팩 추천</h4>
-            <p class="card-text">마스크팩 베스트1</p>
-          </div>
-          <div class="card-footer">
-            <a href="#" class="btn btn-primary">Find Out More!</a>
-          </div>
+        {%end%}
+
+        {%if float(face_length) >= 20%}
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card h-100">
+                <img class="card-img-top" src="/view/mask_2.jpg" alt="" width="200" height="200">
+                <div class="card-body">
+                    <h4 class="card-title">Large Size 마스크팩 추천</h4>
+                    <p class="card-text">마스크팩 베스트</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary">Find Out More!</a>
+                </div>
+            </div>
         </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" src="/view/mask_2.jpg" alt="" width="200" height="200">
-          <div class="card-body">
-            <h4 class="card-title">마스크팩 추천</h4>
-            <p class="card-text">마스크팩 베스트2</p>
-          </div>
-          <div class="card-footer">
-            <a href="#" class="btn btn-primary">Find Out More!</a>
-          </div>
+        {%else%}
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card h-100">
+                <img class="card-img-top" src="/view/mask_3.jpg" alt="" width="200" height="200">
+                <div class="card-body">
+                    <h4 class="card-title">Small Size 마스크팩 추천</h4>
+                    <p class="card-text">마스크팩 베스트</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary">Find Out More!</a>
+                </div>
+            </div>
         </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" src="/view/mask_3.jpg" alt="" width="200" height="200">
-          <div class="card-body">
-            <h4 class="card-title">마스크팩 추천</h4>
-            <p class="card-text">마스크팩 베스트3</p>
-          </div>
-          <div class="card-footer">
-            <a href="#" class="btn btn-primary">Find Out More!</a>
-          </div>
-        </div>
-      </div>
-
+        {%end%}
     </div>
-    <!-- /.row -->
+</div>
 
-  </div>
-  <!-- /.container -->
+</div>
+<!-- /.row -->
 
-  <!-- Footer -->
-  <footer class="py-5 bg-dark">
+</div>
+<!-- /.container -->
+
+<!-- Footer -->
+<footer class="py-5 bg-dark">
     <div class="container">
-      <p class="m-0 text-center text-white">Copyright  &copy;  2019</p>
+        <p class="m-0 text-center text-white">Copyright &copy; 2019</p>
     </div>
     <!-- /.container -->
-  </footer>
+</footer>
 
-  <!-- Bootstrap core JavaScript -->
-  <script src="/view/vendor/jquery/jquery.min.js"></script>
-  <script src="/view/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script src="/view/vendor/jquery/jquery.min.js"></script>
+<script src="/view/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

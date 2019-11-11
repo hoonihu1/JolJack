@@ -4,6 +4,8 @@ import tornado.httpserver, tornado.ioloop, tornado.options, tornado.web, os.path
 from tornado.options import define, options
 import cv2, glob, dlib
 import base64
+import serial
+import time
 
 define("port", default=9000, help="run on the given port", type=int)
 
@@ -27,8 +29,9 @@ class IndexHandler(tornado.web.RequestHandler):
 
 class UploadHandler(tornado.web.RequestHandler):
 
+    pimNum = 0.01
+    write_serialValue = ""
     final_filename = ""
-    final_result=""
     input_tensor_process = "label_image.py --graph=/tmp/output_graph.pb --labels=/tmp/output_labels.txt --input_layer=Placeholder --output_layer=final_result --image=uploads/"
 
     def post(self):
@@ -49,7 +52,6 @@ class UploadHandler(tornado.web.RequestHandler):
         age = learn_age_sex[1]
         face_length = learn_age_sex[2]
 
-
         newlearnpimple = ['', '']
         learnpimpe = learnpimpe.split(' ')
         pimple_age = learnpimpe[1].split('\r')
@@ -66,20 +68,22 @@ class UploadHandler(tornado.web.RequestHandler):
         print(age)
         print(face_length)
 
-
         # self.get(learn_age_sex, learnpimpe)
-        self.get(age)
+        self.write_serialValue = str(self.WhatIsOutputArd(sex, age, face_length, newlearnpimple[1]))
+        print("WhtIsLedNum", self.write_serialValue)
+        self.arduinoSerial()
+        self.get(newlearnpimple, age, sex, face_length)
 
-    def get(self, age):
+    def get(self, newlearnpimple, age, sex, face_length):
 
         if(age == '10'):
-            self.render("view/age10.html", face_img = self.final_filename)
+            self.render("view/age10.html", face_img = self.final_filename, sex = sex, pimple = newlearnpimple[1], face_length = face_length, age = age)
         elif(age == '20'):
-            self.render("view/age20.html", face_img = self.final_filename)
+            self.render("view/age20.html", face_img = self.final_filename, sex = sex, pimple = newlearnpimple[1], face_length = face_length, age = age)
         elif (age == '30'):
-            self.render("view/age30.html", face_img = self.final_filename)
+            self.render("view/age30.html", face_img = self.final_filename, sex = sex, pimple = newlearnpimple[1], face_length = face_length, age = age)
         elif (age == '40'):
-            self.render("view/age40.html", face_img = self.final_filename)
+            self.render("view/age40.html", face_img = self.final_filename, sex = sex, pimple = newlearnpimple[1], face_length = face_length, age = age)
         # self.render("upload_form.html")
 
     def learn_machine(self):
@@ -131,12 +135,111 @@ class UploadHandler(tornado.web.RequestHandler):
 
                 # visualize
                 cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 255), 2)
-                face_length = (y2 - y1) * 0.2
+                face_length = round((y2 - y1) * 0.2, 1)
                 cv2.imwrite('view/result/%s' % img_path.split('/')[-1], img)
 
                 # print(gender, age)
-
                 return gender, age, face_length
+
+    def arduinoSerial(self):
+
+        arduino = serial.Serial('COM3', 9600)
+
+        second = 2
+        time.sleep(second)
+
+
+        if self.write_serialValue == 'q':
+
+            print("sex")
+
+        elif self.write_serialValue == 'on':
+
+            arduino.write(b'y')
+
+        elif self.write_serialValue == 'off':
+
+            arduino.write(b'n')
+
+        else:
+
+            serialValue = self.write_serialValue.encode('utf-8')
+
+            arduino.write(serialValue)
+
+    def WhatIsOutputArd(self, sex, age, size, pimple):
+        if sex == "Male" and age == "10":
+            if float(size) < 20 and float(pimple) <= self.pimNum:
+                return 1
+            elif float(size) < 20 and float(pimple) >= self.pimNum:
+                return 2
+            elif float(size) >= 20 and float(pimple) <= self.pimNum:
+                return 3
+            elif float(size) >= 20 and float(pimple) <= self.pimNum:
+                return 4
+        elif sex == "Male" and age == "20":
+            if float(size) < 20 and float(pimple) <= self.pimNum:
+                return 5
+            elif float(size) < 20 and float(pimple) >= self.pimNum:
+                return 6
+            elif float(size) >= 20 and float(pimple) <= self.pimNum:
+                return 7
+            elif float(size) >= 20 and float(pimple) >= self.pimNum:
+                return 8
+        elif sex == "Male" and age == "30":
+            if float(size) < 20 and float(pimple) <= self.pimNum:
+                return 9
+            elif float(size) < 20 and float(pimple) >= self.pimNum:
+                return 10
+            elif float(size) >= 20 and float(pimple) <= self.pimNum:
+                return 11
+            elif float(size) >= 20 and float(pimple) >= self.pimNum:
+                return 12
+        elif sex == "Male" and age == "self.pimNum":
+            if float(size) < 20 and float(pimple) <= self.pimNum:
+                return 13
+            elif float(size) < 20 and float(pimple) >= self.pimNum:
+                return 14
+            elif float(size) >= 20 and float(pimple) <= self.pimNum:
+                return 15
+            elif float(size) >= 20 and float(pimple) >= self.pimNum:
+                return 16
+        elif sex == "Female" and age == "10":
+            if float(size) < 20 and float(pimple) <= self.pimNum:
+                return 17
+            elif float(size) < 20 and float(pimple) >= self.pimNum:
+                return 18
+            elif float(size) >= 20 and float(pimple) <= self.pimNum:
+                return 19
+            elif float(size) >= 20 and float(pimple) >= self.pimNum:
+                return 20
+        elif sex == "Female" and age == "20":
+            if float(size) < 20 and float(pimple) <= self.pimNum:
+                return 21
+            elif float(size) < 20 and float(pimple) >= self.pimNum:
+                return 22
+            elif float(size) >= 20 and float(pimple) <= self.pimNum:
+                return 23
+            elif float(size) >= 20 and float(pimple) >= self.pimNum:
+                return 24
+        elif sex == "Female" and age == "30":
+            if float(size) < 20 and float(pimple) <= self.pimNum:
+                return 25
+            elif float(size) < 20 and float(pimple) >= self.pimNum:
+                return 26
+            elif float(size) >= 20 and float(pimple) <= self.pimNum:
+                return 27
+            elif float(size) >= 20 and float(pimple) >= self.pimNum:
+                return 28
+        elif sex == "Female" and age == "self.pimNum":
+            if float(size) < 20 and float(pimple) <= self.pimNum:
+                return 29
+            elif float(size) < 20 and float(pimple) >= self.pimNum:
+                return 30
+            elif float(size) >= 20 and float(pimple) <= self.pimNum:
+                return 31
+            elif float(size) >= 20 and float(pimple) >= self.pimNum:
+                return 32
 
 def main():
     http_server = tornado.httpserver.HTTPServer(Application())
