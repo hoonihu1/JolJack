@@ -1,0 +1,22 @@
+#headeri {
+    text-align: center !important;
+    background-color: white;
+    border: 3px solid #eee;
+}
+
+.bg-dark{
+    background-color: #ceb3cc!important;
+}
+
+.navbar-brand{
+    font-weight: bold;
+}
+
+.more_out{
+    font-size: larger;
+    font-weight: 600;
+}
+
+body{
+    background-color: black !important;
+}

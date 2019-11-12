@@ -4,16 +4,90 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
-<video id="player" controls autoplay></video>
-<button id="capture">Capture</button>
-<canvas id="snapshot" width=320 height=240></canvas>
 
-<form method="POST" action="/upload" enctype="multipart/form-data" onsubmit="prepareImg();">
-  <input id="inp_img" type="hidden" name="file1" value="">
-  <input id="bt_upload" type="submit" value="upload">
-</form>
+<style>
 
+    .container {
+        text-align: center;
+        background-image: url("./view/거울5.png");
+        background-repeat: no-repeat;
+        max-width: 1400px !important;
+        min-height: 1447px !important;
+    }
+
+    #capture {
+        display: block;
+        text-align: center;
+        margin: 0 auto;
+        border: none;
+        background: none;
+    }
+
+    .camera {
+        width: 100px;
+        text-align: center;
+        cursor: pointer;
+        margin-top: 100px;
+
+    }
+
+    #uploadb {
+        width: 100%;
+        text-align: center;
+    }
+
+    #player {
+        padding-top: 20%;
+    }
+
+    #snapshot {
+        padding-top: 20%;
+        display: none;
+        margin: 0 auto;
+    }
+
+    #bt_upload {
+        cursor: pointer;
+        background: none;
+        border: none;
+    }
+
+    .gotoserver {
+        display: none;
+        margin-top: 100px;
+        animation-name: example;
+        animation-duration: 3s;
+    }
+
+    @keyframes example {
+        from {
+            transform: scale(1, 1);
+        }
+        to {
+             transform: scale(2,2);
+        }
+    }
+
+</style>
+<link rel='stylesheet' , href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css' ,
+      integrity='sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB' , crossorigin='anonymous'>
+<body style="background-color: black; min-height: 1400px; min-width: 1400px;">
+<div class="container">
+    <video id="player" controls autoplay></video>
+    <canvas id="snapshot" width=640 height=480></canvas>
+    <form id="uploadb" method="POST" action="/upload" enctype="multipart/form-data" onsubmit="prepareImg();">
+        <input id="inp_img" type="hidden" name="file1" value="">
+        <!--        <input id="bt_upload" type="submit" value="">-->
+        <button id="bt_upload" type="submit">
+            <img id="gotoserver" class="gotoserver" src="./view/upload.png" style="width: 100px;">
+        </button>
+    </form>
+    <button id="capture">
+        <img id="camera" class="camera" src="./view/photo-camera.png"></button>
+</div>
+</body>
+<link href="./view/css/uploadListen.css" rel="stylesheet">
+<script src="./view/js/uploadListen.js"></script>
 <script>
     var player = document.getElementById('player');
     var snapshotCanvas = document.getElementById('snapshot');
@@ -40,5 +114,4 @@
         document.getElementById('inp_img').value = canvas.toDataURL("image/png");
     }
 </script>
-</body>
 </html>

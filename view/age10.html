@@ -15,6 +15,7 @@
 
     <!-- Custom styles for this template -->
     <link href="/view/css/heroic-features.css" rel="stylesheet">
+    <link href="/view/css/uploadListen.css" rel="stylesheet">
 
 </head>
 
@@ -41,16 +42,12 @@
         font-family: sans-serif;
     }
 
-    #headeri {
-        background-color: white;
-        border: 3px solid #eee;
-    }
 </style>
 
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="#">상품추천</a>
+        <a class="navbar-brand" href="#">Recommand</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -81,33 +78,33 @@
 
     <!-- Jumbotron Header -->
     <header id="headeri" class="jumbotron my-4">
-        <h2 class="display-3">상품추천</h2>
+        <h2 class="display-3" style="font-weight: 500;">Cosmetics suits you!</h2>
         <img src="/view/result/{{face_img}}">
         <div class="more_out">
             <div class="more">성별은
                 <div class="diff">{{sex}}</div>
-                로 추정 됩니다.
+                로 추정 됩니다
             </div>
             <br>
             <div class="more">얼굴 추정 나이는
                 <div class="diff">10</div>
-                대로 보입니다.
+                대로 보입니다
             </div>
             <br>
             <div class="more">여드름 존재 확률은
                 <div class="diff">{{float(pimple)*100}}%</div>
-                입니다.
+                입니다
             </div>
             <br>
             <div class="more">얼굴 길이는
                 <div class="diff">{{face_length}}</div>
                 (cm)이며, 추천 사이즈는
-                {%if float(face_length) >= 20%}
+                {%if float(face_length) >= 22%}
                 <div class="diff">Large</div>
-                입니다.
+                입니다
                 {%else%}
                 <div class="diff">Small</div>
-                입니다.
+                입니다
                 {%end%}
             </div>
         </div>
@@ -204,7 +201,7 @@
 
         {%end%}
 
-        {%if float(face_length) >= 20%}
+        {%if float(face_length) >= 22 %}
         <div class="col-lg-3 col-md-6 mb-4">
             <div class="card h-100">
                 <img class="card-img-top" src="/view/mask_2.jpg" alt="" width="200" height="200">
@@ -239,14 +236,6 @@
 
 </div>
 <!-- /.container -->
-
-<!-- Footer -->
-<footer class="py-5 bg-dark">
-    <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; 2019</p>
-    </div>
-    <!-- /.container -->
-</footer>
 
 <!-- Bootstrap core JavaScript -->
 <script src="/view/vendor/jquery/jquery.min.js"></script>
