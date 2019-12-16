@@ -22,10 +22,6 @@ class Application(tornado.web.Application):
         }
         tornado.web.Application.__init__(self, handlers, **settings)
 
-class IndexHandler(tornado.web.RequestHandler):
-    def get(self):
-        # self.render("upload_form.html")
-        self.render("upload.html")
 
 class UploadHandler(tornado.web.RequestHandler):
 
@@ -68,7 +64,7 @@ class UploadHandler(tornado.web.RequestHandler):
         print(age)
         print(face_length)
         newlearnpimple[1] = round(float(newlearnpimple[1]), 2)
-        # self.get(learn_age_sex, learnpimpe)
+
         self.write_serialValue = str(self.WhatIsOutputArd(sex, age, face_length, newlearnpimple[1]))
         print("WhtIsLedNum", self.write_serialValue)
         # self.arduinoSerial()
@@ -148,7 +144,7 @@ class UploadHandler(tornado.web.RequestHandler):
         time.sleep(second)
 
         if self.write_serialValue == 'q':
-            print("sex")
+            print("oh")
 
         elif self.write_serialValue == 'on':
             arduino.write(b'y')
@@ -161,6 +157,7 @@ class UploadHandler(tornado.web.RequestHandler):
             arduino.write(serialValue)
 
     def WhatIsOutputArd(self, sex, age, size, pimple):
+
         if sex == "Male" and age == "10":
             if float(size) < 20 and float(pimple) < self.pimNum:
                 return 1
@@ -188,7 +185,7 @@ class UploadHandler(tornado.web.RequestHandler):
                 return 11
             elif float(size) >= 20 and float(pimple) >= self.pimNum:
                 return 12
-        elif sex == "Male" and age == "self.pimNum":
+        elif sex == "Male" and age == "40":
             if float(size) < 20 and float(pimple) < self.pimNum:
                 return 13
             elif float(size) < 20 and float(pimple) >= self.pimNum:
@@ -224,7 +221,7 @@ class UploadHandler(tornado.web.RequestHandler):
                 return 27
             elif float(size) >= 20 and float(pimple) >= self.pimNum:
                 return 28
-        elif sex == "Female" and age == "self.pimNum":
+        elif sex == "Female" and age == "40":
             if float(size) < 20 and float(pimple) < self.pimNum:
                 return 29
             elif float(size) < 20 and float(pimple) >= self.pimNum:
@@ -233,6 +230,13 @@ class UploadHandler(tornado.web.RequestHandler):
                 return 31
             elif float(size) >= 20 and float(pimple) >= self.pimNum:
                 return 32
+
+class IndexHandler(UploadHandler):
+
+    def get(self):
+        self.write_serialValue = "33"
+        # self.arduinoSerial()
+        self.render("upload.html")
 
 def main():
     http_server = tornado.httpserver.HTTPServer(Application())
